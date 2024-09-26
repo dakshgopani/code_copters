@@ -1,4 +1,4 @@
-# code_copters
+# event_planner
 
 A new Flutter project.
 

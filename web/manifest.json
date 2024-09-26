@@ -1,6 +1,6 @@
 {
-    "name": "code_copters",
-    "short_name": "code_copters",
+    "name": "event_planner",
+    "short_name": "event_planner",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
