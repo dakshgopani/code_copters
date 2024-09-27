@@ -40,4 +40,15 @@ class TranslationService {
       throw Exception('Failed to translate text: ${response.statusCode}');
     }
   }
+
+  Future<Map<String, String>> translateStrings(
+      List<String> texts, String targetLang) async {
+    final Map<String, String> translations = {};
+
+    for (String text in texts) {
+      translations[text] = await translateText(text, 'en', targetLang);
+    }
+
+    return translations;
+  }
 }

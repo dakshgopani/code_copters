@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'next_screen.dart'; // Import the next screen
+import 'task_management.dart'; // Import the task management screen
 
 void main() {
   runApp(MyApp());
@@ -10,9 +10,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Translation App',
+      title: 'Task Manager App',
       theme: ThemeData(
         textTheme: GoogleFonts.notoSansTextTheme(),
+        primarySwatch: Colors.blue,
       ),
       home:
           LanguageSelectionScreen(), // Start with the language selection screen
@@ -105,11 +106,11 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
           ElevatedButton(
             onPressed: _selectedLanguage != null
                 ? () {
-                    // Proceed to the next screen with the selected language
+                    // Proceed to the Task Management screen with the selected language
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => NextScreen(
+                        builder: (context) => TaskManagementScreen(
                           selectedLanguage: _selectedLanguage!,
                         ),
                       ),
