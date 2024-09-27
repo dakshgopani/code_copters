@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'translation_service.dart'; // Import the translation service
 import 'next_screen.dart'; // Import the next screen
 
 void main() {
