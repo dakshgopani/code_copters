@@ -8,7 +8,6 @@ import 'language_state.dart';
 import 'package:provider/provider.dart';
 
 class CustomNavigationBar extends StatefulWidget {
-
   const CustomNavigationBar({Key? key}) : super(key: key);
 
   @override
