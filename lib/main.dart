@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart'; // Import provider
-import 'custom_navigation_bar.dart';
-import 'language_state.dart'; // Import LanguageState
-import 'lang_selection_screen.dart';
+import 'package:provider/provider.dart'; // If you're using Provider
+import 'auth_screen.dart'; // Import your AuthScreen
+import 'language_state.dart'; // Import your LanguageState or other providers
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => LanguageState(), // Provide LanguageState globally
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => LanguageState()), // Example provider
+        // Add other providers if necessary
+      ],
       child: MyApp(),
     ),
   );
@@ -18,12 +19,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Task Manager App',
+      title: 'Your App Name',
       theme: ThemeData(
-        textTheme: GoogleFonts.notoSansTextTheme(),
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.orange,
       ),
-      home: LanguageSelectionScreen(), // Start with the language selection screen
+      home: AuthScreen(), // Start with the AuthScreen
     );
   }
 }
