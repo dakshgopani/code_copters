@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Task Manager App',
+      title: 'Eventify',
       theme: ThemeData(
         textTheme: GoogleFonts.notoSansTextTheme(),
         primarySwatch: Colors.blue,
