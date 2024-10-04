@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'translation_service.dart'; // Ensure to import your translation service.
 
 class EventDetailsScreen extends StatefulWidget {
   final Map<String, dynamic> event;
   final int eventIndex;
-  final String selectedLanguage; // Add selectedLanguage parameter
 
   EventDetailsScreen({
     required this.event,
     required this.eventIndex,
-    required this.selectedLanguage,
   });
 
   @override
@@ -20,48 +17,11 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
   late List<Map<String, dynamic>> _expenses;
   TextEditingController _expenseNameController = TextEditingController();
   TextEditingController _expenseAmountController = TextEditingController();
-  final TranslationService _translationService = TranslationService();
-  Map<String, String> _uiTranslations = {};
-  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
     _expenses = List<Map<String, dynamic>>.from(widget.event['expenses']);
-    _loadUiTranslations();
-  }
-
-  Future<void> _loadUiTranslations() async {
-    try {
-      final Map<String, String> translations = {
-        'eventDetailsTitle': await _translationService.translateText(
-            '${widget.event['name']} Details', 'en', widget.selectedLanguage),
-        'expensesLabel': await _translationService.translateText(
-            'Expenses:', 'en', widget.selectedLanguage),
-        'expenseName': await _translationService.translateText(
-            'Expense Name', 'en', widget.selectedLanguage),
-        'expenseAmount': await _translationService.translateText(
-            'Expense Amount', 'en', widget.selectedLanguage),
-        'addExpense': await _translationService.translateText(
-            'Add Expense', 'en', widget.selectedLanguage),
-        'error': await _translationService.translateText(
-            'Error', 'en', widget.selectedLanguage),
-        'budget': await _translationService.translateText(
-            'Budget: ₹${widget.event['budget']}', 'en', widget.selectedLanguage),
-        'amountUsed': await _translationService.translateText(
-            'Amount Used: ₹${widget.event['used']}', 'en', widget.selectedLanguage),
-      };
-
-      setState(() {
-        _uiTranslations = translations;
-        _isLoading = false;
-      });
-    } catch (e) {
-      print("Failed to load translations: $e");
-      setState(() {
-        _isLoading = false;
-      });
-    }
   }
 
   void _addExpense() {
@@ -89,7 +49,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
       context: context,
       builder: (ctx) => AlertDialog(
         title: Text(
-          _uiTranslations['error'] ?? 'Error',
+          'Error',
           style: TextStyle(color: Colors.orange[800]),
         ),
         content: Text(message),
@@ -109,18 +69,9 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text('Loading...'),
-        ),
-        body: Center(child: CircularProgressIndicator()),
-      );
-    }
-
     return Scaffold(
       appBar: AppBar(
-        title: Text(_uiTranslations['eventDetailsTitle'] ?? '${widget.event['name']} Details',
+        title: Text('${widget.event['name']} Details',
             style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.orange[700],
         elevation: 0,
@@ -137,7 +88,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                   _buildBudgetInfo(constraints),
                   SizedBox(height: constraints.maxHeight * 0.02),
                   Text(
-                    _uiTranslations['expensesLabel'] ?? 'Expenses:',
+                    'Expenses:',
                     style: TextStyle(
                       fontSize: constraints.maxWidth * 0.05,
                       fontWeight: FontWeight.bold,
@@ -172,7 +123,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              _uiTranslations['budget'] ?? 'Budget: ₹${widget.event['budget']}',
+              'Budget: ₹${widget.event['budget']}',
               style: TextStyle(
                 fontSize: constraints.maxWidth * 0.045,
                 fontWeight: FontWeight.bold,
@@ -181,7 +132,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
             ),
             SizedBox(height: constraints.maxHeight * 0.01),
             Text(
-              _uiTranslations['amountUsed'] ?? 'Amount Used: ₹${widget.event['used']}',
+              'Amount Used: ₹${widget.event['used']}',
               style: TextStyle(
                 fontSize: constraints.maxWidth * 0.04,
                 color: Colors.orange[700],
@@ -240,7 +191,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
         TextField(
           controller: _expenseNameController,
           decoration: InputDecoration(
-            labelText: _uiTranslations['expenseName'] ?? 'Expense Name',
+            labelText: 'Expense Name',
             labelStyle: TextStyle(color: Colors.orange[800]),
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
             focusedBorder: OutlineInputBorder(
@@ -254,7 +205,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
           controller: _expenseAmountController,
           keyboardType: TextInputType.number,
           decoration: InputDecoration(
-            labelText: _uiTranslations['expenseAmount'] ?? 'Expense Amount',
+            labelText: 'Expense Amount',
             labelStyle: TextStyle(color: Colors.orange[800]),
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
             focusedBorder: OutlineInputBorder(
@@ -266,15 +217,15 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
         SizedBox(height: constraints.maxHeight * 0.02),
         ElevatedButton(
           onPressed: _addExpense,
-          child: Text(_uiTranslations['addExpense'] ?? 'Add Expense',
-              style: TextStyle(color: Colors.white)),
+          child: Text('Add Expense', style: TextStyle(color: Colors.white)),
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.orange[700],
             padding: EdgeInsets.symmetric(
               horizontal: constraints.maxWidth * 0.1,
               vertical: constraints.maxHeight * 0.015,
             ),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           ),
         ),
       ],

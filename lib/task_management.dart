@@ -2,12 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'task_storage.dart'; // Update this to point to your renamed Task class
-import 'translation_service.dart';
 
 class TaskManagementScreen extends StatefulWidget {
-  final String selectedLanguage;
-
-  const TaskManagementScreen({super.key, required this.selectedLanguage});
+  const TaskManagementScreen({super.key});
 
   @override
   _TaskManagementScreenState createState() => _TaskManagementScreenState();
@@ -15,49 +12,7 @@ class TaskManagementScreen extends StatefulWidget {
 
 class _TaskManagementScreenState extends State<TaskManagementScreen> {
   final TaskStorage _taskStorage = TaskStorage();
-  Map<String, String> _uiTranslations = {};
-  bool _isLoading = true;
-  final TranslationService _translationService = TranslationService();
   String _searchQuery = '';
-
-  @override
-  void initState() {
-    super.initState();
-    _loadUiTranslations();
-  }
-
-  Future<void> _loadUiTranslations() async {
-    try {
-      final Map<String, String> translations = {
-        'taskManagerTitle': await _translationService.translateText(
-            'Task Manager', 'en', widget.selectedLanguage),
-        'noTasksAvailable': await _translationService.translateText(
-            'No tasks available. Add a task!', 'en', widget.selectedLanguage),
-        'searchTasks': await _translationService.translateText(
-            'Search Tasks', 'en', widget.selectedLanguage),
-        'addTask': await _translationService.translateText(
-            'Add Task', 'en', widget.selectedLanguage),
-        'taskTitle': await _translationService.translateText(
-            'Task Title', 'en', widget.selectedLanguage),
-        'taskDescription': await _translationService.translateText(
-            'Task Description', 'en', widget.selectedLanguage),
-        'updateTask': await _translationService.translateText(
-            'Update Task', 'en', widget.selectedLanguage),
-        'selectDateRange': await _translationService.translateText(
-            'Select Date Range', 'en', widget.selectedLanguage),
-      };
-
-      setState(() {
-        _uiTranslations = translations;
-        _isLoading = false;
-      });
-    } catch (e) {
-      print("Failed to load translations: $e");
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
 
   void _showAddTaskModal() {
     Navigator.push(
@@ -106,21 +61,12 @@ class _TaskManagementScreenState extends State<TaskManagementScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) {
-      return Scaffold(
-        appBar: AppBar(
-          title: const Text('Loading...'),
-        ),
-        body: const Center(child: CircularProgressIndicator()),
-      );
-    }
-
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: Text(
-            _uiTranslations['taskManagerTitle'] ?? 'Task Manager',
+            'Task Manager',
             style: GoogleFonts.roboto(
                 fontWeight: FontWeight.bold, color: Colors.white),
           ),
@@ -139,7 +85,7 @@ class _TaskManagementScreenState extends State<TaskManagementScreen> {
                     });
                   },
                   decoration: InputDecoration(
-                    labelText: _uiTranslations['searchTasks'] ?? 'Search Tasks',
+                    labelText: 'Search Tasks',
                     labelStyle:
                         GoogleFonts.roboto(color: Colors.orange.shade900),
                     filled: true,
@@ -158,8 +104,7 @@ class _TaskManagementScreenState extends State<TaskManagementScreen> {
                 _taskStorage.tasks.isEmpty
                     ? Center(
                         child: Text(
-                          _uiTranslations['noTasksAvailable'] ??
-                              'No tasks available. Add a task!',
+                          'No tasks available. Add a task!',
                           style: GoogleFonts.roboto(
                               fontSize: 18, color: Colors.grey),
                         ),
@@ -375,23 +320,30 @@ class TaskCard extends StatelessWidget {
                   ),
                   Text(
                     'Remaining Days: $remainingDays',
-                    style: TextStyle(color: Colors.red),
+                    style: TextStyle(
+                      fontSize: 16,
+                      color:
+                          remainingDays > 0 ? Colors.green : Colors.redAccent,
+                    ),
                   ),
                 ],
               ),
             ),
             IconButton(
-              icon: Icon(task.isCompleted
-                  ? Icons.check_box
-                  : Icons.check_box_outline_blank),
+              icon: Icon(
+                task.isCompleted
+                    ? Icons.check_box
+                    : Icons.check_box_outline_blank,
+                color: Colors.deepOrange,
+              ),
               onPressed: onToggleCompletion,
             ),
             IconButton(
-              icon: const Icon(Icons.edit),
+              icon: Icon(Icons.edit, color: Colors.blue),
               onPressed: onEdit,
             ),
             IconButton(
-              icon: const Icon(Icons.delete),
+              icon: Icon(Icons.delete, color: Colors.red),
               onPressed: onDelete,
             ),
           ],

@@ -2,13 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:event_planner/create_event.dart';
 import 'package:event_planner/join_event.dart';
-import 'package:provider/provider.dart';
-import 'language_state.dart';
 
 class CustomBottomSheet {
   static void show(BuildContext context) {
-    final selectedLanguage = Provider.of<LanguageState>(context, listen: false).selectedLanguage;
-
     showCupertinoModalBottomSheet(
       context: context,
       topRadius: const Radius.circular(30),
@@ -62,7 +58,7 @@ class CustomBottomSheet {
                     title: const Text('Create Event'),
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => CreateEventScreen(targetLang: selectedLanguage,),
+                        builder: (context) => CreateEventScreen(),
                       ));
                     },
                   ),
@@ -71,7 +67,7 @@ class CustomBottomSheet {
                     title: const Text('Join Event'),
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => JoinEventScreen(targetLang: selectedLanguage,),
+                        builder: (context) => JoinEventScreen(),
                       ));
                     },
                   ),

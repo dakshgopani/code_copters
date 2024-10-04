@@ -1,15 +1,9 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:uuid/uuid.dart';
-import 'translation_service.dart'; // Import the translation service
-import 'language_state.dart';
 
 class CreateEventScreen extends StatefulWidget {
-  final String targetLang; // Added target language parameter
-
-  const CreateEventScreen({super.key, required this.targetLang});
+  const CreateEventScreen({super.key});
 
   @override
   _CreateEventScreenState createState() => _CreateEventScreenState();
@@ -23,10 +17,6 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   int selectedGuestCount = 1;
   String? eventCode;
 
-  Map<String, String> _uiTranslations = {};
-  bool _isLoading = true;
-  final TranslationService _translationService = TranslationService();
-
   final List<String> eventTypes = [
     'Birthday Party',
     'Wedding',
@@ -38,67 +28,6 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 
   final List<int> guestCounts = List.generate(100, (index) => index + 1);
   final TextEditingController eventTypeController = TextEditingController();
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _loadTranslations();
-  }
-
-  Future<void> _loadTranslations() async {
-    try {
-      final texts = [
-        'createEventTitle',
-        'eventCode',
-        'organizerName',
-        'eventType',
-        'location',
-        'budget',
-        'guests',
-        'description',
-        'date',
-        'time',
-        'fillDetails',
-        'CREATE EVENT',
-      ];
-
-      final selectedLanguage = Provider.of<LanguageState>(context, listen: false).selectedLanguage;
-      if (kDebugMode) {
-        print("Selected Language: $selectedLanguage");
-      } // Debug statement
-
-      final translations = await _translationService.translateStrings(texts, selectedLanguage);
-      if (kDebugMode) {
-        print("Translations fetched: $translations");
-      } // Debug statement
-
-      setState(() {
-        _uiTranslations = translations;
-        _isLoading = false;
-      });
-    } catch (e) {
-      if (kDebugMode) {
-        print("Error in fetching translations: $e");
-      } // Debug statement for errors
-      setState(() {
-        _isLoading = false;
-        _uiTranslations = {
-          'Create Event': 'Create Event',
-          'eventCode': 'Your Event Code is',
-          'organizerName': 'Organizer Name',
-          'eventType': 'Event Type',
-          'location': 'Location',
-          'budget': 'Budget',
-          'guests': 'Number of Guests',
-          'description': 'Description',
-          'date': 'Date',
-          'time': 'Time',
-          'Fill Details': 'Fill in the details to set up your perfect event',
-          'CREATE EVENT': 'CREATE EVENT',
-        }; // Provide fallback translations
-      });
-    }
-  }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -135,7 +64,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(_uiTranslations['Create Event'] ?? 'Event Created!'),
+          title: const Text('Event Created!'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -144,14 +73,14 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                 version: QrVersions.auto,
                 size: 200.0,
               ),
-              SizedBox(height: 20),
-              Text("${_uiTranslations['eventCode'] ?? 'Your Event Code is'} $eventCode"),
+              const SizedBox(height: 20),
+              Text("Your Event Code is $eventCode"),
             ],
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         );
@@ -161,18 +90,9 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) {
-      return Scaffold(
-        appBar: AppBar(
-          title: const Text('Loading...'),
-        ),
-        body: const Center(child: CircularProgressIndicator()),
-      );
-    }
-
     return Scaffold(
       appBar: AppBar(
-        title: Text(_uiTranslations['Create Event'] ?? 'Create Event'),
+        title: const Text('Create Event'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -189,9 +109,9 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.orange,
                   backgroundColor: Colors.white,
-                  minimumSize: Size(double.infinity, 50),
+                  minimumSize: const Size(double.infinity, 50),
                 ),
-                child: Text(_uiTranslations['CREATE EVENT'] ?? 'CREATE EVENT'),
+                child: const Text('CREATE EVENT'),
               ),
             ],
           ),
@@ -202,22 +122,26 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 
   Widget _buildBeautifulTitle() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        gradient: LinearGradient(colors: [Colors.orange.shade100, Colors.white]),
+        gradient:
+            LinearGradient(colors: [Colors.orange.shade100, Colors.white]),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: const [
           Text(
-            _uiTranslations['Create Event'] ?? 'Create a New Event',
-            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.orange.shade800),
+            'Create a New Event',
+            style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: Colors.orange),
           ),
           SizedBox(height: 8),
           Text(
-            _uiTranslations['Fill Details'] ?? 'Fill in the details to set up your perfect event',
-            style: TextStyle(fontSize: 16, color: Colors.orange.shade600),
+            'Fill in the details to set up your perfect event',
+            style: TextStyle(fontSize: 16, color: Colors.orange),
           ),
         ],
       ),
@@ -230,7 +154,11 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
-            BoxShadow(color: Colors.grey.withOpacity(0.2), spreadRadius: 5, blurRadius: 7, offset: Offset(0, 3)),
+            BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 5,
+                blurRadius: 7,
+                offset: const Offset(0, 3)),
           ]),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -238,8 +166,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
           children: [
             _buildFormField(
               child: TextFormField(
-                decoration: InputDecoration(
-                  labelText: _uiTranslations['organizerName'] ?? 'Organizer Name',
+                decoration: const InputDecoration(
+                  labelText: 'Organizer Name',
                   border: OutlineInputBorder(),
                 ),
                 onChanged: (value) {
@@ -250,8 +178,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
             const SizedBox(height: 16),
             _buildFormField(
               child: TextFormField(
-                decoration: InputDecoration(
-                  labelText: _uiTranslations['eventName'] ?? 'Event Name', // Added translation
+                decoration: const InputDecoration(
+                  labelText: 'Event Name',
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -261,7 +189,9 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
               child: Autocomplete<String>(
                 optionsBuilder: (TextEditingValue textEditingValue) {
                   return eventTypes.where((String option) {
-                    return option.toLowerCase().contains(textEditingValue.text.toLowerCase());
+                    return option
+                        .toLowerCase()
+                        .contains(textEditingValue.text.toLowerCase());
                   });
                 },
                 onSelected: (String selection) {
@@ -269,13 +199,16 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                     selectedEventType = selection;
                   });
                 },
-                fieldViewBuilder: (BuildContext context, TextEditingController controller, FocusNode focusNode, VoidCallback onFieldSubmitted) {
+                fieldViewBuilder: (BuildContext context,
+                    TextEditingController controller,
+                    FocusNode focusNode,
+                    VoidCallback onFieldSubmitted) {
                   eventTypeController.text = selectedEventType ?? '';
                   return TextFormField(
                     controller: controller,
                     focusNode: focusNode,
-                    decoration: InputDecoration(
-                      labelText: _uiTranslations['eventType'] ?? 'Event Type',
+                    decoration: const InputDecoration(
+                      labelText: 'Event Type',
                       border: OutlineInputBorder(),
                     ),
                   );
@@ -288,7 +221,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
             _buildFormField(
               child: TextFormField(
                 decoration: InputDecoration(
-                  labelText: _uiTranslations['location'] ?? 'Location',
+                  labelText: 'Location',
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -297,7 +230,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
             _buildFormField(
               child: TextFormField(
                 decoration: InputDecoration(
-                  labelText: _uiTranslations['budget'] ?? 'Budget',
+                  labelText: 'Budget',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.attach_money),
                 ),
@@ -310,7 +243,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
             _buildFormField(
               child: TextFormField(
                 decoration: InputDecoration(
-                  labelText: _uiTranslations['description'] ?? 'Description',
+                  labelText: 'Description',
                   border: OutlineInputBorder(),
                 ),
                 maxLines: 3,
@@ -324,7 +257,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 
   Widget _buildFormField({required Widget child}) {
     return Container(
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(4)),
+      decoration: BoxDecoration(
+          color: Colors.white, borderRadius: BorderRadius.circular(4)),
       child: child,
     );
   }
@@ -337,12 +271,13 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
             child: TextFormField(
               readOnly: true,
               onTap: () => _selectDate(context),
-              decoration: InputDecoration(
-                labelText: _uiTranslations['date'] ?? 'Date',
+              decoration: const InputDecoration(
+                labelText: 'Date',
                 border: OutlineInputBorder(),
                 suffixIcon: Icon(Icons.calendar_today),
               ),
-              controller: TextEditingController(text: "${selectedDate.toLocal()}".split(' ')[0]),
+              controller: TextEditingController(
+                  text: "${selectedDate.toLocal()}".split(' ')[0]),
             ),
           ),
         ),
@@ -352,12 +287,13 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
             child: TextFormField(
               readOnly: true,
               onTap: () => _selectTime(context),
-              decoration: InputDecoration(
-                labelText: _uiTranslations['time'] ?? 'Time',
+              decoration: const InputDecoration(
+                labelText: 'Time',
                 border: OutlineInputBorder(),
                 suffixIcon: Icon(Icons.access_time),
               ),
-              controller: TextEditingController(text: selectedTime.format(context)),
+              controller:
+                  TextEditingController(text: selectedTime.format(context)),
             ),
           ),
         ),
@@ -368,8 +304,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   Widget _buildGuestCountDropdown() {
     return _buildFormField(
       child: DropdownButtonFormField(
-        decoration: InputDecoration(
-          labelText: _uiTranslations['guests'] ?? 'Number of Guests',
+        decoration: const InputDecoration(
+          labelText: 'Number of Guests',
           border: OutlineInputBorder(),
         ),
         value: selectedGuestCount,

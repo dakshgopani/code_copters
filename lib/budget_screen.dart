@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'event_details_screen.dart';
-import 'translation_service.dart'; // Make sure to import your TranslationService
 
 class BudgetScreen extends StatefulWidget {
-  final String selectedLanguage;
-
-  const BudgetScreen({super.key, required this.selectedLanguage});
+  const BudgetScreen({super.key});
 
   @override
   _BudgetScreenState createState() => _BudgetScreenState();
@@ -20,41 +17,6 @@ class _BudgetScreenState extends State<BudgetScreen> {
     {'name': 'Charity Event', 'budget': 3000, 'used': 2500, 'expenses': []},
   ];
 
-  Map<String, String> _uiTranslations = {};
-  bool _isLoading = true;
-  final TranslationService _translationService = TranslationService();
-
-  @override
-  void initState() {
-    super.initState();
-    _loadUiTranslations();
-  }
-
-  Future<void> _loadUiTranslations() async {
-    try {
-      final Map<String, String> translations = {
-        'budgetManagement': await _translationService.translateText(
-            'Budget Management', 'en', widget.selectedLanguage),
-        'budget': await _translationService.translateText(
-            'Budget:', 'en', widget.selectedLanguage),
-        'used': await _translationService.translateText(
-            'Used:', 'en', widget.selectedLanguage),
-        'percentUsed': await _translationService.translateText(
-            '% used', 'en', widget.selectedLanguage),
-      };
-
-      setState(() {
-        _uiTranslations = translations;
-        _isLoading = false;
-      });
-    } catch (e) {
-      print("Failed to load translations: $e");
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
-
   void _updateEvent(int index, Map<String, dynamic> updatedEvent) {
     setState(() {
       _events[index] = updatedEvent;
@@ -63,22 +25,12 @@ class _BudgetScreenState extends State<BudgetScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) {
-      return Scaffold(
-        appBar: AppBar(
-          title: const Text('Loading...'),
-        ),
-        body: const Center(child: CircularProgressIndicator()),
-      );
-    }
-
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-
-        title: Text(
-          _uiTranslations['budgetManagement'] ?? 'Budget Management',
-          style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+        title: const Text(
+          'Budget Management',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
         backgroundColor: Colors.orange[700],
         elevation: 0,
@@ -102,7 +54,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
                         MaterialPageRoute(
                           builder: (context) => EventDetailsScreen(
                             event: event,
-                            eventIndex: index, selectedLanguage: widget.selectedLanguage,
+                            eventIndex: index,
                           ),
                         ),
                       );
@@ -139,7 +91,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
                               children: [
                                 Flexible(
                                   child: Text(
-                                    '${_uiTranslations['budget'] ?? 'Budget:'} ₹${event['budget']}',
+                                    'Budget: ₹${event['budget']}',
                                     style: TextStyle(
                                       fontSize: constraints.maxWidth * 0.035,
                                       color: Colors.black87,
@@ -148,7 +100,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
                                 ),
                                 Flexible(
                                   child: Text(
-                                    '${_uiTranslations['used'] ?? 'Used:'} ₹${event['used']}',
+                                    'Used: ₹${event['used']}',
                                     style: TextStyle(
                                       fontSize: constraints.maxWidth * 0.035,
                                       color: Colors.orange[700],
@@ -174,7 +126,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
                             ),
                             SizedBox(height: constraints.maxHeight * 0.01),
                             Text(
-                              '${(progress * 100).toStringAsFixed(1)}% ${_uiTranslations['percentUsed'] ?? '% used'}',
+                              '${(progress * 100).toStringAsFixed(1)}% used',
                               style: TextStyle(
                                 fontSize: constraints.maxWidth * 0.03,
                                 color: Colors.orange[800],
