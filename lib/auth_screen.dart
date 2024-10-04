@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'custom_navigation_bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthScreen extends StatefulWidget {
   @override
@@ -29,7 +30,11 @@ class _AuthScreenState extends State<AuthScreen> {
     );
 
     if (response.statusCode == 200) {
-      // Authentication successful
+      // Authentication successful, save login state
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('isLoggedIn', true);
+
+      // Navigate to the HomeScreen
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
