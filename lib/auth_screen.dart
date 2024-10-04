@@ -16,8 +16,8 @@ class _AuthScreenState extends State<AuthScreen> {
 
   Future<void> _authenticate() async {
     final url = isLogin
-        ? 'https://hackathon-project-04tx.onrender.com/login'
-        : 'https://hackathon-project-04tx.onrender.com/signup';
+        ? 'https://66fc384bd9202c937bdb0639--clever-taiyaki-0781e4.netlify.app/.netlify/functions/login'
+        : 'https://66fc384bd9202c937bdb0639--clever-taiyaki-0781e4.netlify.app/.netlify/functions/signup';
 
     final response = await http.post(
       Uri.parse(url),
@@ -64,7 +64,8 @@ class _AuthScreenState extends State<AuthScreen> {
               decoration: InputDecoration(
                 labelText: 'Email',
                 filled: true,
-                fillColor: Colors.orangeAccent.withOpacity(0.2), // Lighten fill color
+                fillColor:
+                    Colors.orangeAccent.withOpacity(0.2), // Lighten fill color
                 border: OutlineInputBorder(),
               ),
             ),
@@ -76,7 +77,8 @@ class _AuthScreenState extends State<AuthScreen> {
               decoration: InputDecoration(
                 labelText: 'Password',
                 filled: true,
-                fillColor: Colors.orangeAccent.withOpacity(0.2), // Lighten fill color
+                fillColor:
+                    Colors.orangeAccent.withOpacity(0.2), // Lighten fill color
                 border: OutlineInputBorder(),
               ),
             ),
@@ -104,7 +106,8 @@ class _AuthScreenState extends State<AuthScreen> {
                   _errorMessage = null; // Clear error message on toggle
                 });
               },
-              child: Text(isLogin ? 'Create an Account' : 'Already have an Account?'),
+              child: Text(
+                  isLogin ? 'Create an Account' : 'Already have an Account?'),
             ),
           ],
         ),
