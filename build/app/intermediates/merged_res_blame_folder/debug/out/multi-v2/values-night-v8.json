@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.event_planner.app-mergeDebugResources-29:/values-night-v8/values-night-v8.xml",
+            "outputFile": "com.example.event_planner.app-mergeDebugResources-31:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Rishi\\Desktop\\hackdeck-hackathon\\code_copters\\android\\app\\src\\main\\res\\values-night\\styles.xml",
+                    "source": "C:\\Users\\samya\\Documents\\code_copters\\android\\app\\src\\main\\res\\values-night\\styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",
