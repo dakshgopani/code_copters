@@ -37,6 +37,8 @@ class _AuthScreenState extends State<AuthScreen> {
       // Authentication successful, save login state
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setBool('isLoggedIn', true);
+      await prefs.setString('userEmail', _emailController.text); // Save email
+
 
       // Navigate to the HomeScreen
       Navigator.pushReplacement(

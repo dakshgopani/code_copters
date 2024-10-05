@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'bottom_sheet.dart';
 import 'budget_screen.dart';
+import 'home_screen.dart';
 
 class CustomNavigationBar extends StatefulWidget {
   const CustomNavigationBar({Key? key}) : super(key: key);
@@ -32,7 +33,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> bottomBarPages = [
-      Container(color: Colors.white, child: Center(child: Text('Page 1'))),
+      Container(color: Colors.white, child: Center(child: EventsPage())), // Page 1
       Container(color: Colors.white, child: Center(child: Text('Page 2'))),
       Container(color: Colors.white, child: Center(child: Text('Page 3'))),
       Container(
