@@ -110,7 +110,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 
     String qrData = "Event Code: $eventCode\nOrganized by: $organizerName";
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       // Show success dialog
       _showDialog('Event Created!', qrData, true);
     } else {
