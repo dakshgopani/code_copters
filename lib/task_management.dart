@@ -70,7 +70,7 @@ class _TaskManagementScreenState extends State<TaskManagementScreen> {
             style: GoogleFonts.roboto(
                 fontWeight: FontWeight.bold, color: Colors.white),
           ),
-          backgroundColor: Colors.deepOrangeAccent,
+          backgroundColor: Colors.orange,
           centerTitle: true,
         ),
         body: Padding(
@@ -87,7 +87,7 @@ class _TaskManagementScreenState extends State<TaskManagementScreen> {
                   decoration: InputDecoration(
                     labelText: 'Search Tasks',
                     labelStyle:
-                        GoogleFonts.roboto(color: Colors.orange.shade900),
+                        GoogleFonts.roboto(color: Colors.orange),
                     filled: true,
                     fillColor: Colors.white,
                     border: OutlineInputBorder(
@@ -97,7 +97,7 @@ class _TaskManagementScreenState extends State<TaskManagementScreen> {
                         width: 2.0,
                       ),
                     ),
-                    prefixIcon: Icon(Icons.search, color: Colors.deepOrange),
+                    prefixIcon: Icon(Icons.search, color: Colors.orange),
                   ),
                 ),
                 SizedBox(height: 20),
@@ -147,7 +147,7 @@ class _TaskManagementScreenState extends State<TaskManagementScreen> {
           padding: const EdgeInsets.only(bottom: 100.0),
           child: FloatingActionButton(
             onPressed: _showAddTaskModal,
-            backgroundColor: Colors.deepOrange,
+            backgroundColor: Colors.orange,
             child: const Icon(Icons.add, color: Colors.white),
           ),
         ));
@@ -172,9 +172,10 @@ class AddTaskScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.orange.shade50,
       appBar: AppBar(
-        title: Text(existingTask == null ? 'Add a New Task' : 'Edit Task'),
-        backgroundColor: Colors.deepOrangeAccent,
+        title: Text(existingTask == null ? 'Add a New Task' : 'Edit Task',style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
+        backgroundColor: Colors.orange,
         foregroundColor: Colors.white,
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -212,7 +213,7 @@ class AddTaskScreen extends StatelessWidget {
                 headerStyle: DateRangePickerHeaderStyle(
                   backgroundColor: Colors.orange.withOpacity(0.3),
                   textStyle: TextStyle(
-                    color: Colors.deepOrange,
+                    color: Colors.orange,
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
@@ -246,7 +247,7 @@ class AddTaskScreen extends StatelessWidget {
               ElevatedButton(
                 child: Text(existingTask == null ? 'Add Task' : 'Update Task'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.deepOrange,
+                  backgroundColor: Colors.orange,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),

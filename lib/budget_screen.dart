@@ -32,8 +32,9 @@ class _BudgetScreenState extends State<BudgetScreen> {
           'Budget Management',
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
-        backgroundColor: Colors.orange[700],
+        backgroundColor: Colors.orange,
         elevation: 0,
+        centerTitle: true,
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {

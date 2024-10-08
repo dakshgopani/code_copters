@@ -76,8 +76,9 @@ class _EventsPageState extends State<EventsPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('My Events'),
+        title: Text('My Events',style:TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
         backgroundColor: Colors.orange,
+        centerTitle: true,
       ),
       body: isLoading
           ? Center(child: CircularProgressIndicator())
